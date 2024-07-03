@@ -121,6 +121,13 @@ void pybind_pointcloud(py::module &m) {
                  "Removes points that are further away from their neighbors in "
                  "average.",
                  "nb_neighbors"_a, "std_ratio"_a, "print_progress"_a = false)
+            .def("estimate_iss", &PointCloud::EstimateISS,
+                 "Function to estimate Intrinsic Shape signatures from the point cloud.",
+                 "search_param"_a = KDTreeSearchParamKNN(),
+                 "salient_radius"_a = 0.1,
+               //   "gamma_21"_a = 0.975,
+               //   "gamma_32"_a = 0.975,
+                 "min_neighbors"_a = 5)
             .def("estimate_normals", &PointCloud::EstimateNormals,
                  "Function to compute the normals of a point cloud. Normals "
                  "are oriented with respect to the input point cloud if "
@@ -256,7 +263,15 @@ camera. Given depth value d at (u, v) image coordinate, the corresponding 3d poi
             .def_readwrite("covariances", &PointCloud::covariances_,
                            "``float64`` array of shape ``(num_points, 3, 3)``, "
                            "use ``numpy.asarray()`` to access data: Points "
-                           "covariances.");
+                           "covariances.")
+            .def_readwrite("eigen_values", &PointCloud::eigen_values_,
+                           "``float64`` array of shape ``(num_points, 3)``, "
+                           "use ``numpy.asarray()`` to access data: Eigen values "
+                           "of points.")
+            .def_readwrite("eigen_vectors", &PointCloud::eigen_vectors_,
+                           "``float64`` array of shape ``(num_points, 3, 3)``, "
+                           "use ``numpy.asarray()`` to access data: Eigen vectors "
+                           "of points.");
     docstring::ClassMethodDocInject(m, "PointCloud", "has_colors");
     docstring::ClassMethodDocInject(m, "PointCloud", "has_normals");
     docstring::ClassMethodDocInject(m, "PointCloud", "has_points");

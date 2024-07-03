@@ -234,6 +234,14 @@ public:
             const KDTreeSearchParam &search_param = KDTreeSearchParamKNN(),
             bool fast_normal_computation = true);
 
+    /// \brief Function to compute the Intrinsice Shape Signatures of a point cloud.
+    /// TBD.
+    void EstimateISS(const KDTreeSearchParam &search_param = KDTreeSearchParamKNN(),
+                     double salient_radius = 0.0,
+                //      double gamma_21 = 0.975,
+                //      double gamma_32 = 0.975,
+                     int min_neighbors = 5);
+
     /// \brief Function to orient the normals of a point cloud.
     ///
     /// \param orientation_reference Normals are oriented with respect to
@@ -463,6 +471,9 @@ public:
     std::vector<Eigen::Vector3d> points_;
     /// Points normals.
     std::vector<Eigen::Vector3d> normals_;
+
+    std::vector<Eigen::Vector3d> eigen_values_;
+    std::vector<Eigen::Matrix3d> eigen_vectors_;
     /// RGB colors of points.
     std::vector<Eigen::Vector3d> colors_;
     /// Covariance Matrix for each point
